@@ -95,9 +95,9 @@ metinden ayırt edilemiyor.
 
 | Model | Doğrulama MAP@25 | Görülen / görülmeyen | 5 katlı ortalama | Kaggle skoru (public / private) |
 |---|---|---|---|---|
-| Popülerlik | 0,033 | 0,044 / 0,000 | 0,028 ± 0,004 | – |
-| TF-IDF + kosinüs | 0,103 | 0,095 / 0,123 | 0,108 ± 0,006 | – |
-| Cümle gömmesi + kosinüs | **0,154** | 0,141 / 0,191 | **0,151 ± 0,011** | _Eklenecek_ |
+| Popülerlik | 0,033 | 0,044 / 0,000 | 0,028 ± 0,004 | gönderilmedi |
+| TF-IDF + kosinüs | 0,103 | 0,095 / 0,123 | 0,108 ± 0,006 | gönderilmedi |
+| Cümle gömmesi + kosinüs | **0,154** | 0,141 / 0,191 | **0,151 ± 0,011** | 0,13422 / **0,14806** |
 
 Doğrulama: 374 soru, 867 yanlış şık; bunların 224'ünün (%25,8) etiketi eğitim kısmında hiç yok.
 
@@ -105,7 +105,9 @@ Doğrulama: 374 soru, 867 yanlış şık; bunların 224'ünün (%25,8) etiketi e
 - Popülerlik görülmeyen kavram yanılgılarının hiçbirini bulamıyor; metin modelleri tüm aday listesini sıraladığı için bulabiliyor.
 - Gömme modeli doğru etiketi satırların %45,9'unda ilk 25'e koyuyor ama genelde alt sıralarda. En büyük kazanç sıralamayı iyileştirmekten gelecek (Ödev 2).
 
-**Güncel Kaggle skoru:** _Eklenecek_
+**Güncel Kaggle skoru (late submission):** Private MAP@25 **0,14806**, Public MAP@25 0,13422. Private skor doğrulama skoruna (0,154) ve beş katlı ortalamaya (0,151) çok yakın; doğrulama tasarımı gizli test setini iyi temsil ediyor.
+
+![Kaggle late submission skoru](submissions/assignment1_late_submission.png)
 
 ## Çalıştırma
 
@@ -151,9 +153,10 @@ GROUP23_CENG313/
 | 2026-11-12 | İbrahim BETBAŞI | Notebook dersin yedi bölümlük yapısına göre düzenlendi; her grafiğe yorum eklendi |
 | 2026-11-12 | Koray CİHAN | MAP@25 metriği, `QuestionId`'ye göre gruplu doğrulama ve submission yazıcı (`src/utils.py`) |
 | 2026-11-12 | Koray CİHAN | TF-IDF ve cümle gömmesi baseline'ları (`src/models.py`); notebook 5.2: üç modelin karşılaştırması, görülen/görülmeyen skorlar, 5 katlı doğrulama ve örnek tahminler |
+| 2026-11-12 | Koray CİHAN | Kaggle late submission (private 0,14806); README ve notebook 6. bölüm skorlarla güncellendi |
 
 ## Kaggle gönderim geçmişi
 
 | Tarih | Üye | Model | Public skor | Private skor | Not |
 |---|---|---|---|---|---|
-| _Eklenecek_ | | | | | |
+| 2026-11-12 | Koray CİHAN | Cümle gömmesi + kosinüs (`all-MiniLM-L6-v2`) | 0,13422 | 0,14806 | Late submission; internetsiz Kaggle notebook, `src/` ve model ağırlıkları Kaggle dataset olarak eklendi |
