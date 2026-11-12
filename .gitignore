@@ -1,0 +1,22 @@
+# Kaggle competition data must not be redistributed through the repository
+data/
+*.zip
+
+# Credentials
+kaggle.json
+.env
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# Notebooks
+.ipynb_checkpoints/
+
+# Editors and OS files
+.vscode/
+.idea/
+Thumbs.db
+.DS_Store
