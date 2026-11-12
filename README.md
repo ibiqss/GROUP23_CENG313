@@ -61,8 +61,10 @@ ardından yazılı bir yorum gelir.
 | Baseline | Fikir |
 |---|---|
 | Popülerlik | Her satır için eğitimdeki en sık 25 kavram yanılgısını tahmin eder |
-| TF-IDF | _Eklenecek_ |
-| Cümle gömmesi | _Eklenecek_ |
+| TF-IDF + kosinüs | Sorgu metni ve 2.587 aday adı TF-IDF vektörlerine çevrilir, adaylar kosinüs benzerliğine göre sıralanır |
+| Cümle gömmesi + kosinüs | Hazır `all-MiniLM-L6-v2` modeliyle sorgu ve adaylar anlam vektörlerine çevrilir, kosinüs benzerliğine göre sıralanır (ince ayar yok) |
+
+**Doğrulama:** Soruların %20'si `QuestionId`'ye göre bütün olarak ayrılır (`random_state=42`); sonuçlar ayrıca 5 katlı `GroupKFold` ile kontrol edilir. Skor MAP@25'tir ve doğru etiketin eğitim kısmında görülüp görülmemesine göre ayrı raporlanır.
 
 ### Ödev 2: Önerilen çözüm
 
@@ -91,11 +93,17 @@ metinden ayırt edilemiyor.
 
 ### Baseline skorları
 
-| Model | Doğrulama MAP@25 | Kaggle skoru (public / private) |
-|---|---|---|
-| Popülerlik | _Eklenecek_ | _Eklenecek_ |
-| TF-IDF | _Eklenecek_ | _Eklenecek_ |
-| Cümle gömmesi | _Eklenecek_ | _Eklenecek_ |
+| Model | Doğrulama MAP@25 | Görülen / görülmeyen | 5 katlı ortalama | Kaggle skoru (public / private) |
+|---|---|---|---|---|
+| Popülerlik | 0,033 | 0,044 / 0,000 | 0,028 ± 0,004 | – |
+| TF-IDF + kosinüs | 0,103 | 0,095 / 0,123 | 0,108 ± 0,006 | – |
+| Cümle gömmesi + kosinüs | **0,154** | 0,141 / 0,191 | **0,151 ± 0,011** | _Eklenecek_ |
+
+Doğrulama: 374 soru, 867 yanlış şık; bunların 224'ünün (%25,8) etiketi eğitim kısmında hiç yok.
+
+- En iyi baseline cümle gömmesi; popülerliğin yaklaşık 4,7, TF-IDF'in 1,5 katı skor alıyor.
+- Popülerlik görülmeyen kavram yanılgılarının hiçbirini bulamıyor; metin modelleri tüm aday listesini sıraladığı için bulabiliyor.
+- Gömme modeli doğru etiketi satırların %45,9'unda ilk 25'e koyuyor ama genelde alt sıralarda. En büyük kazanç sıralamayı iyileştirmekten gelecek (Ödev 2).
 
 **Güncel Kaggle skoru:** _Eklenecek_
 
@@ -115,7 +123,7 @@ cd GROUP23_CENG313
 pip install -r requirements.txt jupyter
 ```
 
-Veriyi `data/` klasörüne koyduktan sonra `assignment1_eda_baseline.ipynb` dosyasını açıp tüm hücreleri çalıştırın.
+Veriyi `data/` klasörüne koyduktan sonra `assignment1_eda_baseline.ipynb` dosyasını açıp tüm hücreleri çalıştırın. Windows'ta `pip` bulunamazsa `python -m pip ...` ve `python -m notebook assignment1_eda_baseline.ipynb` kullanın. Cümle gömmesi modeli ilk çalıştırmada Hugging Face'ten indirilir (internet gerekir).
 
 ## Repo yapısı
 
@@ -129,8 +137,8 @@ GROUP23_CENG313/
 ├── src/
 │   ├── __init__.py
 │   ├── data.py                      Veri yükleme ve ön işleme
-│   ├── models.py                    Baseline modeller
-│   └── utils.py                     Veri kalitesi kontrolleri, istatistikler ve grafikler
+│   ├── models.py                    Popülerlik, TF-IDF ve cümle gömmesi baseline'ları
+│   └── utils.py                     Veri kalitesi, EDA grafikleri, MAP@25, doğrulama ayrımı, submission
 ├── data/                            Commit edilmez
 └── submissions/                     Kaggle skor ekran görüntüleri
 ```
@@ -141,6 +149,8 @@ GROUP23_CENG313/
 |---|---|---|
 | 2026-11-09 | İbrahim BETBAŞI | Veri yükleme, ön işleme, keşifsel veri analizi ve popülerlik baseline'ı |
 | 2026-11-12 | İbrahim BETBAŞI | Notebook dersin yedi bölümlük yapısına göre düzenlendi; her grafiğe yorum eklendi |
+| 2026-11-12 | Koray CİHAN | MAP@25 metriği, `QuestionId`'ye göre gruplu doğrulama ve submission yazıcı (`src/utils.py`) |
+| 2026-11-12 | Koray CİHAN | TF-IDF ve cümle gömmesi baseline'ları (`src/models.py`); notebook 5.2: üç modelin karşılaştırması, görülen/görülmeyen skorlar, 5 katlı doğrulama ve örnek tahminler |
 
 ## Kaggle gönderim geçmişi
 
